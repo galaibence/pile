@@ -1,0 +1,1 @@
+CREATE USER api WITH PASSWORD 'foobar';

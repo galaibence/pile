@@ -1,5 +1,5 @@
 // Import the framework and instantiate it
-import Fastify from 'fastify';
+import Fastify, { FastifyReply, FastifyRequest } from 'fastify';
 import pg from 'pg';
 
 import {
@@ -8,6 +8,8 @@ import {
 } from './handlers/accounts';
 import { CreateTransactionBodySchema, GetAccountParamsSchema, ListAccountsQuerySchema, ListTransactionsQuerySchema } from './schemas';
 import { createListTransactionsHandler, createCreateTransactionsHandler } from './handlers/transactions';
+
+const VALID_API_KEY = 'secret-1';
 
 (async () => {
   const fastify = Fastify({
@@ -23,6 +25,14 @@ import { createListTransactionsHandler, createCreateTransactionsHandler } from '
     port: 5432,
   });
   await client.connect();
+
+  fastify.addHook('onRequest', async (request: FastifyRequest, reply: FastifyReply) => {
+    const apiKey = request.headers['x-api-key'];
+    if (apiKey !== VALID_API_KEY) {
+      reply.status(401);
+      reply.send();
+    }
+  });
 
   // Declare a route
   fastify.get(

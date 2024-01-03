@@ -2,8 +2,14 @@
 
 CREATE OR REPLACE FUNCTION check_source_balance_and_reduce() RETURNS trigger AS $$
     DECLARE available_balance DECIMAL;
+    DECLARE target_account_id UUID;
 
     BEGIN
+        SELECT id INTO target_account_id FROM accounts WHERE iban = NEW.target_iban;
+        IF NOT FOUND THEN
+            RAISE EXCEPTION 'Target IBAN not found';
+        END IF;
+
         SELECT (balances -> 'available' ->> 'value')::DECIMAL INTO available_balance FROM accounts WHERE id = NEW.source FOR UPDATE;
 
         IF (available_balance < NEW.amount) THEN

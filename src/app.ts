@@ -11,7 +11,7 @@ import { createListTransactionsHandler, createCreateTransactionsHandler } from '
 
 const VALID_API_KEY = 'secret-1';
 
-(async () => {
+export function createApp(client: pg.Client) {
   const fastify = Fastify({
     logger: {
       level: 'info',
@@ -19,15 +19,6 @@ const VALID_API_KEY = 'secret-1';
     },
     ignoreTrailingSlash: true,
   })
-
-  const client = new pg.Client({
-    database: 'pile',
-    user: 'cicd',
-    password: 'pipeline',
-    host: 'pile-db',
-    port: 5432,
-  });
-  await client.connect();
 
   fastify.addHook('onRequest', async (request: FastifyRequest, reply: FastifyReply) => {
     const apiKey = request.headers['x-api-key'];
@@ -74,11 +65,5 @@ const VALID_API_KEY = 'secret-1';
     createCreateTransactionsHandler(client),
   );
 
-
-  try {
-    await fastify.listen({ port: 3000, host: '0.0.0.0' });
-  } catch (err) {
-    fastify.log.error(err);
-    process.exit(1);
-  }
-})();
+  return fastify;
+}

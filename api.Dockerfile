@@ -11,4 +11,4 @@ FROM node:lts-alpine
 COPY --from=BUILD /build /build
 COPY --from=BUILD /node_modules /node_modules
 
-CMD ["node", "/build/index.js"]
+CMD ["node", "/build/service.js"]

@@ -1,0 +1,11 @@
+# .dockerignore
+build/
+data/
+database/
+frontend/
+node_modules/
+
+.gitignore
+docker-compose.yaml
+Dockerfile
+README.md

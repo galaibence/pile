@@ -25,7 +25,7 @@ CREATE OR REPLACE FUNCTION increase_target_balance() RETURNS trigger AS $$
         SELECT (balances -> 'available' ->> 'value')::DECIMAL INTO target_available_balance FROM accounts WHERE iban = NEW.target_iban;
         
         UPDATE accounts
-        SET balances = jsonb_set(balances, '{available,value}', TO_JSONB(target_available_balance + NEW.amount), )
+        SET balances = jsonb_set(balances, '{available,value}', TO_JSONB(target_available_balance + NEW.amount))
         WHERE iban = NEW.target_iban;
 
         RETURN NEW;

@@ -1,8 +1,11 @@
-import { readdir, readFile } from 'node:fs/promises';
-import pg from 'pg';
+const { readdir, readFile } = require('node:fs/promises');
+const pg = require('pg');
+
+const { run: createUserApi } = require('./create-api-user');
 
 (async () => {
     const client = new pg.Client({
+        host: 'pile-db',
         database: 'pile',
         user: 'cicd',
         password: 'pipeline',
@@ -21,9 +24,11 @@ import pg from 'pg';
             console.log(`Running migration ${i}...`);
             await client.query(migrations[i]);
         }
+        await createUserApi(client);
+
         return;
     } catch (e) {
         console.error(e);
         throw e;
     }
-})().then(x => process.exit());
+})().then(_ => process.exit());

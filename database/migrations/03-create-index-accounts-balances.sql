@@ -1,1 +1,1 @@
-CREATE INDEX IF NOT EXISTS idx_accounts_balance ON accounts USING GIN ((balances -> 'available.value'));
+CREATE INDEX IF NOT EXISTS idx_accounts_balance ON accounts((balances -> 'available' ->> 'value'))

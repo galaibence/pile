@@ -18,6 +18,8 @@ async function run() {
     await client.connect();
 
     await Promise.all(accounts.data.map((account) => insertQuery(account)).map((q) => client.query(q)));
+
+    await client.end();
 }
 
 module.exports = {

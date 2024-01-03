@@ -5,4 +5,4 @@ COPY database database/
 COPY data data/
 RUN npm install pg @nearform/sql
 
-CMD ["sh", "database/bootstrap.sh"]
+CMD ["node", "database/bootstrap.js"]

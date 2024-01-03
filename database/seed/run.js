@@ -1,7 +1,5 @@
 const { run: seedAccounts } = require('./01-seed-accounts');
 
-(async () => {
+module.exports = async () => {
     await seedAccounts();
-
-    return;
-})().then(_ => process.exit());
+};

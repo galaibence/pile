@@ -2,7 +2,7 @@
   "name": "pile",
   "version": "0.1.0",
   "description": "",
-  "main": "index.js",
+  "main": "build/service.js",
   "scripts": {
     "build": "tsc --p .",
     "lint": "eslint src/",

@@ -3,7 +3,7 @@ const pg = require('pg');
 
 const { run: createUserApi } = require('./create-api-user');
 
-(async () => {
+module.exports = async () => {
     const client = new pg.Client({
         host: 'pile-db',
         database: 'pile',
@@ -27,9 +27,11 @@ const { run: createUserApi } = require('./create-api-user');
         console.info('Creating database user "api"');
         await createUserApi(client);
 
-        return;
+        await client.end();
     } catch (e) {
+        await client.end();
+
         console.error(e);
         throw e;
     }
-})().then(_ => process.exit());
+};

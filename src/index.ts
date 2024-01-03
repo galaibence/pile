@@ -13,7 +13,10 @@ const VALID_API_KEY = 'secret-1';
 
 (async () => {
   const fastify = Fastify({
-    logger: true,
+    logger: {
+      level: 'info',
+      file: '/tmp/api.log'
+    },
     ignoreTrailingSlash: true,
   })
 

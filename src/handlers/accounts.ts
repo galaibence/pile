@@ -24,6 +24,8 @@ export function createListAccountsHandler(client: Client) {
         // Fastify already validated the schema, safe to use `as`
         const query = request.query as ListAccountsQuery
 
+        request.log.debug(`Listing ${query.limit ? query.limit : ' '}accounts ${query.from ? `starting with ${query.from}th entry` : ''}`);
+
         try {
             const responses = await client.query(listAccountsQuery(query));
 
@@ -43,6 +45,8 @@ export function createGetAccountHandler(client: Client) {
     return async function handler(request: FastifyRequest, reply: FastifyReply) {
         // Fastify already validated the schema, safe to use `as`
         const { id } = request.params as GetAccountPathParams;
+
+        request.log.debug(`Getting account information for account ${id}`);
 
         try {
             const response = await client.query(sql`SELECT * FROM accounts WHERE id = ${id}`);

@@ -21,9 +21,10 @@ const { run: createUserApi } = require('./create-api-user');
 
     try {
         for (let i = 0; i < migrations.length; ++i) {
-            console.log(`Running migration ${i}...`);
+            console.info(`Running migration ${i}...`);
             await client.query(migrations[i]);
         }
+        console.info('Creating database user "api"');
         await createUserApi(client);
 
         return;

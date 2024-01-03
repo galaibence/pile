@@ -6,7 +6,8 @@ import {
   createGetAccountHandler,
   createListAccountsHandler,
 } from './handlers/accounts';
-import { GetAccountParamsSchema, ListAccountsQuerySchema } from './schemas';
+import { CreateTransactionBodySchema, GetAccountParamsSchema, ListAccountsQuerySchema, ListTransactionsQuerySchema } from './schemas';
+import { createListTransactionsHandler, createCreateTransactionsHandler } from './handlers/transactions';
 
 (async () => {
   const fastify = Fastify({
@@ -26,21 +27,40 @@ import { GetAccountParamsSchema, ListAccountsQuerySchema } from './schemas';
   // Declare a route
   fastify.get(
     '/accounts', {
-      schema: {
-        querystring: ListAccountsQuerySchema,
-      }
+    schema: {
+      querystring: ListAccountsQuerySchema,
+    }
   },
     createListAccountsHandler(client),
   );
 
   fastify.get(
     '/accounts/:id', {
-      schema: {
-        params: GetAccountParamsSchema,
-      }
+    schema: {
+      params: GetAccountParamsSchema,
+    }
   },
     createGetAccountHandler(client),
   );
+
+  fastify.get(
+    '/transactions', {
+    schema: {
+      params: ListTransactionsQuerySchema,
+    },
+  },
+    createListTransactionsHandler(client),
+  );
+
+  fastify.post(
+    '/transactions', {
+    schema: {
+      body: CreateTransactionBodySchema,
+    },
+  },
+    createCreateTransactionsHandler(client),
+  );
+
 
   try {
     await fastify.listen({ port: 3000, host: '0.0.0.0' });

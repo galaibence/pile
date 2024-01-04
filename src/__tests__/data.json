@@ -1,0 +1,56 @@
+{
+    "accounts": [
+        {
+            "iban": "iban1", 
+            "name": "name1",
+            "country": "DEU",
+            "balances": {
+                "available": {
+                    "value": 100,
+                    "currency": "EUR"
+                }
+            }
+        }, {
+            "iban": "iban2", 
+            "name": "name2",
+            "country": "HUN",
+            "balances": {
+                "available": {
+                    "value": 80,
+                    "currency": "EUR"
+                }
+            }
+        }, {
+            "iban": "iban3", 
+            "name": "name3",
+            "country": "GBR",
+            "balances": {
+                "available": {
+                    "value": 120,
+                    "currency": "EUR"
+                }
+            }
+        }
+    ],
+    "transactions": [
+        {
+            "amount": 5,
+            "recipient_name": "Sleeping Beauty",
+            "reference": "spindle",
+            "target_bic": "F4K3B1C",
+            "target_iban": "iban2"
+        }, {
+            "amount": 5,
+            "recipient_name": "Elsa",
+            "reference": "ice",
+            "target_bic": "F4K3B1C",
+            "target_iban": "iban3"
+        }, {
+            "amount": 5,
+            "recipient_name": "Snowwhite",
+            "reference": "apple",
+            "target_bic": "F4K3B1C",
+            "target_iban": "iban1"
+        }
+    ]
+}

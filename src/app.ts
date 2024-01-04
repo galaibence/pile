@@ -6,7 +6,13 @@ import {
   createGetAccountHandler,
   createListAccountsHandler,
 } from './handlers/accounts';
-import { CreateTransactionBodySchema, GetAccountParamsSchema, ListAccountsQuerySchema, ListTransactionsQuerySchema } from './schemas';
+import {
+  CreateTransactionBodySchema,
+  GetAccountParamsSchema,
+  ListAccountsQuerySchema,
+  ListTransactionsQuerySchema,
+  ListTransactionsResponseSchema,
+} from './schemas';
 import { createListTransactionsHandler, createCreateTransactionsHandler } from './handlers/transactions';
 
 const VALID_API_KEY = 'secret-1';
@@ -50,7 +56,10 @@ export function createApp(client: pg.Client) {
   fastify.get(
     '/transactions', {
     schema: {
-      params: ListTransactionsQuerySchema,
+      querystring: ListTransactionsQuerySchema,
+      response: {
+        200: ListTransactionsResponseSchema,
+      },
     },
   },
     createListTransactionsHandler(client),

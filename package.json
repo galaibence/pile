@@ -6,7 +6,8 @@
   "scripts": {
     "build": "tsc --p .",
     "lint": "eslint src/",
-    "test": "sh local-test.sh"
+    "test:local": "sh local-test.sh",
+    "test:ci": "jest"
   },
   "keywords": [],
   "author": "",

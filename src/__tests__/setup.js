@@ -4,6 +4,7 @@ const sql = require('@nearform/sql');
 
 const { createApp } = require('../app');
 const migrations = require('../../database/migrations/run');
+const { accounts, transactions } = require('./data.json');
 
 module.exports = async function () {
     await migrations();
@@ -16,12 +17,19 @@ module.exports = async function () {
     });
     await client.connect();
 
-    await client.query(sql`
+    const { rows } = await client.query(sql`
         INSERT INTO accounts (iban, name, country, balances)
-        VALUES
-            ('iban1', 'name1', 'DEU', '{"available": {"value": 100, "currency": "EUR"}}'),
-            ('iban2', 'name2', 'HUN', '{"available": {"value": 80, "currency": "EUR"}}'),
-            ('iban3', 'name3', 'GBR', '{"available": {"value": 120, "currency": "EUR"}}')
+        VALUES ${sql.glue(
+            accounts.map((account) => sql`(${account.iban}, ${account.name}, ${account.country}, ${JSON.stringify(account.balances)})`),
+            ',')}
+        RETURNING id
+    `);
+
+    await client.query(sql`
+        INSERT INTO transactions (source, amount, recipient_name, reference, target_bic, target_iban)
+        VALUES ${sql.glue(
+            transactions.map((trx, idx) => sql`(${rows[idx].id}, ${trx.amount}, ${trx.recipient_name}, ${trx.reference}, ${trx.target_bic}, ${trx.target_iban})`),
+            ',')}
     `);
 
     const app = createApp(client);

@@ -6,7 +6,7 @@
   "scripts": {
     "build": "tsc --p .",
     "lint": "eslint src/",
-    "test": "jest"
+    "test": "sh local-test.sh"
   },
   "keywords": [],
   "author": "",
@@ -25,6 +25,7 @@
     "eslint": "^8.56.0",
     "jest": "^29.7.0",
     "json-schema-to-ts": "^3.0.0",
+    "ts-jest": "^29.1.1",
     "typescript": "^5.3.3"
   }
 }

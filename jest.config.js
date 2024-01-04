@@ -60,10 +60,10 @@ const config = {
   // forceCoverageMatch: [],
 
   // A path to a module which exports an async function that is triggered once before all test suites
-  // globalSetup: undefined,
+  globalSetup: './__tests__/setup.js',
 
   // A path to a module which exports an async function that is triggered once after all test suites
-  // globalTeardown: undefined,
+  globalTeardown: './__tests__/teardown.js',
 
   // A set of global variables that need to be available in all test environments
   // globals: {},
@@ -101,7 +101,7 @@ const config = {
   // notifyMode: "failure-change",
 
   // A preset that is used as a base for Jest's configuration
-  // preset: undefined,
+  preset: 'ts-jest',
 
   // Run tests from one or more projects
   // projects: undefined,
@@ -145,7 +145,7 @@ const config = {
   // snapshotSerializers: [],
 
   // The test environment that will be used for testing
-  // testEnvironment: "jest-environment-node",
+  testEnvironment: "node",
 
   // Options that will be passed to the testEnvironment
   // testEnvironmentOptions: {},

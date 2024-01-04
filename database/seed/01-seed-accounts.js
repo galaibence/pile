@@ -4,7 +4,7 @@ const pg = require('pg');
 const accounts = require('../../data/accounts.json');
 
 const insertQuery = ({ IBAN, balances, country, createdAt, id, name}) => sql`
-    INSERT INTO accounts (iban, id, name, createdAt, country, balances)
+    INSERT INTO accounts (iban, id, name, created_at, country, balances)
     VALUES (${IBAN}, ${id}, ${name}, ${createdAt}, ${country}, ${balances})
 `;
 

@@ -6,5 +6,6 @@ CREATE TABLE IF NOT EXISTS transactions (
     recipient_name text NOT NULL,
     target_iban varchar(34) NOT NULL,
     target_bic varchar(11) NOT NULL,
-    reference text
+    reference text,
+    created_at timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
 );

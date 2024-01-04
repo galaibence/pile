@@ -6,5 +6,8 @@ export DB_PASSWORD="pipeline"
 docker compose up db \
     --detach \
     --wait
-jest
+npx jest
+jest_exit_code=$?
 docker compose down
+
+exit "$jest_exit_code"

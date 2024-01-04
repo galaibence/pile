@@ -3,6 +3,11 @@ on: [ push ]
 jobs:
   lint-test-build:
     runs-on: ubuntu-latest
+    env:
+      DB_HOSTNAME: pile-db
+      DB_USERNAME: cicd
+      DB_PASSWORD: pipeline
+      DB_DATABASE: pile
     steps:
       - uses: actions/checkout@v4
       - name: Use Node.js

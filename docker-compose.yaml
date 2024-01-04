@@ -14,13 +14,23 @@ services:
       timeout: 5s
       retries: 5
   migrations:
+    environment:
+      - DB_HOSTNAME=pile-db
+      - DB_DATABASE=pile
+      - DB_USERNAME=cicd
+      - DB_PASSWORD=pipeline
     build: 
       dockerfile: ./migrations.Dockerfile
     depends_on:
       db:
         condition: service_healthy
   api:
-    build: 
+    environment:
+      - DB_HOSTNAME=pile-db
+      - DB_DATABASE=pile
+      - DB_USERNAME=api
+      - DB_PASSWORD=foobar
+    build:
       dockerfile: ./api.Dockerfile
     depends_on:
       db:

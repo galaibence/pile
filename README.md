@@ -41,3 +41,10 @@ CREATE TABLE balances (
 
 * Fastify was used as the backend framework, because of its built-in schema validation using JSON schema. `json-schema-to-ts` is used to generate TypeScript types from these schemas. With the resulting types, we can make sure that at compile time our application is type safe, and Fastify's input validation, using the same schemas provides runtime safety checking all incoming data
 
+* Caching: even though I did not have the time to implement caching, I thought about how to implement it:
+    - caching could be done through using Redis as the cache, which is easy to integrate into the docker compose environment or through a cloud provider
+    - the `transactions` records should be immutable, so any transaction listing can be cached easily, and the cache won't even need to be cleared of the transaction records
+    - as the `accounts` table is not immutable, as we are updating the records, whenever a transfer is inserted, we need to send a message to a cache invalidator service, through some event messaging service, like AWS Cloud Bridge, or similar. Another process listening to these events then clears the account from the cache.
+
+* Performance testing: through the CICD pipeline, we can add integration tests, and measure the time it takes for the requests. After a while, we can establish some standard request times we need to adhere to, and use that in the pipeline, and potentially block the deployment if the request times are increasing
+

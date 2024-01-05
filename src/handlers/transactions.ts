@@ -26,7 +26,7 @@ const insertTransactionQuery = ({
 }: CreateTransactionBody) => sql`
     INSERT INTO transactions (source, amount, recipient_name, reference, target_bic, target_iban)
     VALUES (${sourceAccountId}, ${amount}, ${recipientName}, ${reference}, ${targetBic}, ${targetIban})
-    RETURNING id, source, amount, recipient_name, reference, target_bic, target_iban
+    RETURNING *
 `;
 
 export function createListTransactionsHandler(client: Client) {
@@ -40,7 +40,7 @@ export function createListTransactionsHandler(client: Client) {
 
             reply.status(200);
             reply.type('application/json');
-            reply.send(transactions.rows);
+            reply.send({ status: 'success', data: transactions.rows });
         } catch (err) {
             request.log.error(err);
 
@@ -60,11 +60,17 @@ export function createCreateTransactionsHandler(client: Client) {
             request.log.info(`Successful transfer: ${JSON.stringify(transactionData)}`); // can easily be parsed in Grafana or elsewhere
             request.log.debug(`Successfully transfered ${transactionData.amount} EUR from account ${transactionData.sourceAccountId} to IBAN ${transactionData.targetIban}`);
 
-            reply.status(200);
+            reply.status(201);
             reply.type('application/json');
-            reply.send(transaction.rows[0]);
+            reply.send({ status: 'success', data: transaction.rows[0] });
         } catch (err) {
             request.log.debug(`Failed to transfer ${transactionData.amount} EUR from account ${transactionData.sourceAccountId} to IBAN ${transactionData.targetIban}`);
+
+            if (err instanceof Error && (['Target IBAN not found', 'Insufficient available balances'].includes(err.message))) {
+                reply.status(200);
+                reply.type('application/json');
+                reply.send({ status: 'error', message: err.message });
+            }
 
             request.log.error(err);
 

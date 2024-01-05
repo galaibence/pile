@@ -31,7 +31,7 @@ export function createListAccountsHandler(client: Client) {
 
             reply.status(200);
             reply.type('application/json');
-            reply.send(responses.rows);
+            reply.send({ status: 'success', data: responses.rows });
         } catch (err) {
             request.log.error(err);
 
@@ -53,7 +53,7 @@ export function createGetAccountHandler(client: Client) {
 
             reply.status(200);
             reply.type('application/json');
-            reply.send(response.rows[0]);
+            reply.send({ status: 'success', data: response.rows[0] });
         } catch (err) {
             request.log.error(err);
 

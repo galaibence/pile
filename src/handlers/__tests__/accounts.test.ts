@@ -38,7 +38,7 @@ describe('account handlers', () => {
         });
 
         it('lists all accounts without pagination', async () => {
-            const accounts = await fetch('http://0.0.0.0:3000/accounts', {
+            const { data: accounts } = await fetch('http://0.0.0.0:3000/accounts', {
                 headers: {
                     'x-api-key': 'secret-1',
                 },
@@ -50,13 +50,13 @@ describe('account handlers', () => {
         });
 
         it('lists paginated accounts', async () => {
-            const accounts = await fetch('http://0.0.0.0:3000/accounts', {
+            const { data: accounts } = await fetch('http://0.0.0.0:3000/accounts', {
                 headers: {
                     'x-api-key': 'secret-1',
                 },
             }).then(R => R.json());
 
-            const account1 = await fetch('http://0.0.0.0:3000/accounts?limit=1', {
+            const { data: account1 } = await fetch('http://0.0.0.0:3000/accounts?limit=1', {
                 headers: {
                     'x-api-key': 'secret-1',
                 },
@@ -64,7 +64,7 @@ describe('account handlers', () => {
             expect(account1.length).toEqual(1);
             expect(account1[0]).toEqual(accounts[0]);
 
-            const account2 = await fetch('http://0.0.0.0:3000/accounts?from=1&limit=1', {
+            const { data: account2 } = await fetch('http://0.0.0.0:3000/accounts?from=1&limit=1', {
                 headers: {
                     'x-api-key': 'secret-1',
                 },
@@ -72,7 +72,7 @@ describe('account handlers', () => {
             expect(account2.length).toEqual(1);
             expect(account2[0]).toEqual(accounts[1]);
 
-            const account3 = await fetch('http://0.0.0.0:3000/accounts?from=2&limit=1', {
+            const { data: account3 } = await fetch('http://0.0.0.0:3000/accounts?from=2&limit=1', {
                 headers: {
                     'x-api-key': 'secret-1',
                 },
@@ -80,7 +80,7 @@ describe('account handlers', () => {
             expect(account3.length).toEqual(1);
             expect(account3[0]).toEqual(accounts[2]);
 
-            const emptyAccounts = await fetch('http://0.0.0.0:3000/accounts?from=3&limit=1', {
+            const { data: emptyAccounts } = await fetch('http://0.0.0.0:3000/accounts?from=3&limit=1', {
                 headers: {
                     'x-api-key': 'secret-1',
                 },
@@ -89,7 +89,7 @@ describe('account handlers', () => {
         });
 
         it('respects min filter value', async () => {
-            const accounts = await fetch('http://0.0.0.0:3000/accounts?min=90', {
+            const { data: accounts } = await fetch('http://0.0.0.0:3000/accounts?min=90', {
                 headers: {
                     'x-api-key': 'secret-1',
                 },
@@ -99,7 +99,7 @@ describe('account handlers', () => {
         });
 
         it('respects max filter value', async () => {
-            const accounts = await fetch('http://0.0.0.0:3000/accounts?max=90', {
+            const { data: accounts } = await fetch('http://0.0.0.0:3000/accounts?max=90', {
                 headers: {
                     'x-api-key': 'secret-1',
                 },
@@ -112,13 +112,13 @@ describe('account handlers', () => {
 
     describe('get account', () => {
         it('returns the requested account', async () => {
-            const accounts = await fetch('http://0.0.0.0:3000/accounts', {
+            const { data: accounts } = await fetch('http://0.0.0.0:3000/accounts', {
                 headers: {
                     'x-api-key': 'secret-1',
                 },
             }).then(R => R.json());
 
-            const account3 = await fetch(`http://0.0.0.0:3000/accounts/${accounts[2].id}`, {
+            const { data: account3 } = await fetch(`http://0.0.0.0:3000/accounts/${accounts[2].id}`, {
                 headers: {
                     'x-api-key': 'secret-1',
                 },

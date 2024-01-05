@@ -11,9 +11,9 @@ type GetAccountPathParams = FromSchema<typeof GetAccountParamsSchema>;
 function listAccountsQuery({ from, limit, max, min, }: ListAccountsQuery) {
     return sql`
         SELECT * FROM accounts
-        ${min || max ? sql`WHERE` : sql``}
-        ${min ? sql`(balances -> 'available' ->> 'value')::DECIMAL >= ${min}` : sql``}
-        ${max ? sql`(balances -> 'available' ->> 'value')::DECIMAL < ${max}` : sql``}
+        ${min || max ? sql`WHERE 1=1` : sql``}
+        ${min ? sql`AND (balances -> 'available' ->> 'value')::DECIMAL >= ${min}` : sql``}
+        ${max ? sql`AND (balances -> 'available' ->> 'value')::DECIMAL < ${max}` : sql``}
         ${from ? sql`OFFSET ${from}` : sql``}
         ${limit ? sql`LIMIT ${limit}` : sql``}
     `;

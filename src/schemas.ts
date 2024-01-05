@@ -77,6 +77,29 @@ export const AccountSchema = {
     additionalProperties: false,
 } as const;
 
+export const ListAccountsResponseSchema = {
+    type: 'object', 
+    properties: {
+        status: { const: 'success' },
+        data: {
+            type: 'array',
+            items: AccountSchema,
+        },
+    },
+    required: [ 'status', 'data' ],
+    additionalProperties: false,
+} as const;
+
+export const GetAccountResponseSchema = {
+    type: 'object',
+    properties: {
+        status: { const: 'success' },
+        data: AccountSchema,
+    },
+    required: [ 'status', 'data' ],
+    additionalProperties: false,
+} as const;
+
 export const TransactionSchema = {
     type: 'object',
     properties: {
@@ -89,11 +112,48 @@ export const TransactionSchema = {
         reference: { type: 'string' },
         created_at: { type: 'string' },
     },
-    required: [],
+    required: [
+        'id',
+        'source',
+        'amount',
+        'recipient_name',
+        'target_iban',
+        'target_bic',
+        'reference',
+        'created_at',
+    ],
     additionalProperties: false,
 } as const;
 
 export const ListTransactionsResponseSchema = {
-    type: 'array',
-    items: TransactionSchema,
+    type: 'object',
+    properties: {
+        status: { const: 'success' },
+        data: {
+            type: 'array',
+            items: TransactionSchema,        
+        },
+    },
+    required: [ 'status', 'data' ],
+    additionalProperties: false,
+} as const;
+
+export const CreateTransactionResponseSchema = {
+    type: 'object',
+    properties: {
+        status: { const: 'success' },
+        data: TransactionSchema,
+    },
+    required: [ 'status', 'data' ],
+    additionalProperties: false,
+} as const;
+
+export const CreateTransactionErrorSchema = {
+    type: 'object',
+    properties: {
+        status: { const: 'error',  },
+        message: { type: 'string' },
+    },
+    required: [ 'status', 'message' ],
+    additionalProperties: false,
 } as const;

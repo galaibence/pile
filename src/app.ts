@@ -8,8 +8,12 @@ import {
 } from './handlers/accounts';
 import {
   CreateTransactionBodySchema,
+  CreateTransactionErrorSchema,
+  CreateTransactionResponseSchema,
   GetAccountParamsSchema,
+  GetAccountResponseSchema,
   ListAccountsQuerySchema,
+  ListAccountsResponseSchema,
   ListTransactionsQuerySchema,
   ListTransactionsResponseSchema,
 } from './schemas';
@@ -39,7 +43,10 @@ export function createApp(client: pg.Client) {
     '/accounts', {
     schema: {
       querystring: ListAccountsQuerySchema,
-    }
+      response: {
+        200: ListAccountsResponseSchema,
+      },
+    },
   },
     createListAccountsHandler(client),
   );
@@ -48,7 +55,10 @@ export function createApp(client: pg.Client) {
     '/accounts/:id', {
     schema: {
       params: GetAccountParamsSchema,
-    }
+      response: {
+        200: GetAccountResponseSchema,
+      },
+    },
   },
     createGetAccountHandler(client),
   );
@@ -69,6 +79,10 @@ export function createApp(client: pg.Client) {
     '/transactions', {
     schema: {
       body: CreateTransactionBodySchema,
+      response: {
+        200: CreateTransactionErrorSchema,
+        201: CreateTransactionResponseSchema,
+      },
     },
   },
     createCreateTransactionsHandler(client),
